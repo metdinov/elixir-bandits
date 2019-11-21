@@ -35,3 +35,6 @@ npm-debug.log
 
 # Curl test commands
 commands.txt
+
+# Ignore custom IEx aliases
+.iex.exs

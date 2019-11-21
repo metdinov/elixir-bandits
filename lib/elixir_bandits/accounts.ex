@@ -4,8 +4,8 @@ defmodule ElixirBandits.Accounts do
   """
 
   import Ecto.Query, warn: false
-  alias ElixirBandits.Registry
 
+  alias ElixirBandits.Registry
   alias ElixirBandits.Accounts.User
 
   @doc """
@@ -23,19 +23,8 @@ defmodule ElixirBandits.Accounts do
 
   @doc """
   Gets a single user.
-
-  Raises `Ecto.NoResultsError` if the User does not exist.
-
-  ## Examples
-
-      iex> get_user!(123)
-      %User{}
-
-      iex> get_user!(456)
-      ** (Ecto.NoResultsError)
-
   """
-  def get_user!(id), do: Repo.get!(User, id)
+  def get_user(username), do: Registry.get_user(username)
 
   @doc """
   Creates a user.

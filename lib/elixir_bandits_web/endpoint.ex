@@ -2,7 +2,10 @@ defmodule ElixirBanditsWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :elixir_bandits
 
   socket "/socket", ElixirBanditsWeb.UserSocket,
-    websocket: true,
+    websocket: [
+      timeout:
+        :elixir_bandits |> Application.get_env(__MODULE__) |> Keyword.get(:ws_timeout, 60_000)
+    ],
     longpoll: false
 
   # Serve at "/" the static files from "priv/static" directory.

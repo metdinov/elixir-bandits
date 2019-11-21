@@ -10,9 +10,8 @@ defmodule ElixirBanditsWeb.BanditController do
     render(conn, "index.json", bandit: bandit)
   end
 
-  def show(conn, %{"id" => id}) do
-    with bandit_id <- String.to_atom(id),
-         {:ok, payoff} <- Bandit.get_payoff(bandit_id) do
+  def show(conn, %{"id" => bandit_id}) do
+    with {:ok, payoff} <- Bandit.get_payoff(bandit_id, conn.session_id) do
       render(conn, "show.json", payoff: payoff)
     end
   end

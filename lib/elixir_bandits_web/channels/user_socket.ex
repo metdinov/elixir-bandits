@@ -2,7 +2,7 @@ defmodule ElixirBanditsWeb.UserSocket do
   use Phoenix.Socket
 
   ## Channels
-  # channel "room:*", ElixirBanditsWeb.RoomChannel
+  channel "session:*", ElixirBanditsWeb.SessionChannel
 
   # Socket params are passed from the client and can
   # be used to verify and authenticate a user. After
@@ -15,8 +15,19 @@ defmodule ElixirBanditsWeb.UserSocket do
   #
   # See `Phoenix.Token` documentation for examples in
   # performing token verification on connect.
-  def connect(_params, socket, _connect_info) do
-    {:ok, socket}
+  def connect(%{"token" => token}, socket) do
+    # case Guardian.decode_and_verify(token) do
+    #   {:ok, claims} ->
+    #     case GuardianSerializer.from_token(claims["sub"]) do
+    #       {:ok, user} ->
+    #         {:ok, assign(socket, :current_user, user)}
+    #       {:error, _reason} ->
+    #         :error
+    #     end
+    #   {:error, _reason} ->
+    #     :error
+    # end
+    {:ok, assign(socket, :token, token)}
   end
 
   # Socket id's are topics that allow you to identify all sockets for a given user:
@@ -29,5 +40,5 @@ defmodule ElixirBanditsWeb.UserSocket do
   #     ElixirBanditsWeb.Endpoint.broadcast("user_socket:#{user.id}", "disconnect", %{})
   #
   # Returning `nil` makes this socket anonymous.
-  def id(_socket), do: nil
+  def id(socket), do: "user_socket:#{socket.assigns.token}"
 end

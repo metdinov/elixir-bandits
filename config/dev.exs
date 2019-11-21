@@ -45,6 +45,9 @@ config :elixir_bandits, ElixirBanditsWeb.Endpoint,
 # configured to run both http and https servers on
 # different ports.
 
+# Remove timeout for websocket connections
+config :elixir_bandits, ElixirBanditsWeb.Endpoint, ws_timeout: :infinity
+
 # Watch static and templates for browser reloading.
 config :elixir_bandits, ElixirBanditsWeb.Endpoint,
   live_reload: [
