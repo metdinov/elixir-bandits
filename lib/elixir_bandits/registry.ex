@@ -22,9 +22,9 @@ defmodule ElixirBandits.Registry do
   end
 
   def get_user(username) do
-    case GenServer.call(__MODULE__, {:get, username}) do
-      [] -> {:not_found}
-      [{^username, password_hash}] -> {:found, password_hash}
+    case GenServer.call(__MODULE__, {:get_user, username}) do
+      user = %User{} -> {:found, user}
+      _ -> {:not_found}
     end
   end
 
@@ -53,9 +53,11 @@ defmodule ElixirBandits.Registry do
     {:ok, %{}}
   end
 
-  def handle_call({:get, user}, _from, state) do
-    results = :ets.lookup(@users_table, user)
-    {:reply, results, state}
+  def handle_call({:get_user, username}, _from, state) do
+    results = :ets.lookup(@users_table, username)
+    {name, password_hash} = Enum.at(results, 0)
+    user = %User{username: name, password_hash: password_hash}
+    {:reply, user, state}
   end
 
   def handle_call({:get_score, session_id}, _from, state) do

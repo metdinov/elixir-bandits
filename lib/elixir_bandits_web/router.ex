@@ -13,6 +13,11 @@ defmodule ElixirBanditsWeb.Router do
     plug :accepts, ["json"]
   end
 
+  pipeline :api_auth do
+    plug :accepts, ["json"]
+    plug(ElixirBandits.Auth.Pipeline)
+  end
+
   scope "/", ElixirBanditsWeb do
     pipe_through :browser
 
@@ -20,12 +25,18 @@ defmodule ElixirBanditsWeb.Router do
   end
 
   scope "/api", ElixirBanditsWeb do
+    pipe_through :api_auth
+
+    get "/bandit/:id", BanditController, :show
+  end
+
+  scope "/api", ElixirBanditsWeb do
     pipe_through :api
 
     # Auth
     post("/users/signup", UserController, :create)
-
-    get "/bandit/:id", BanditController, :show
+    post("/users/signin", SessionController, :create) 
+    post("/users/refresh", SessionController, :refresh)   
   end
 
   # Other scopes may use custom stacks.

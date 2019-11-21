@@ -3,6 +3,7 @@ defmodule ElixirBanditsWeb.UserController do
 
   alias ElixirBandits.Accounts
   alias ElixirBandits.Accounts.User
+  alias ElixirBandits.Auth.Guardian
 
   action_fallback ElixirBanditsWeb.FallbackController
 
@@ -13,10 +14,13 @@ defmodule ElixirBanditsWeb.UserController do
 
   def create(conn, %{"user" => user_params}) do
     with {:ok, %User{} = user} <- Accounts.create_user(user_params) do
+      new_conn = Guardian.Plug.sign_in(conn, user.username)
+      jwt = Guardian.Plug.current_token(new_conn)
+
       conn
       |> put_status(:created)
       |> put_resp_header("location", Routes.user_path(conn, :create, user_params))
-      |> render("create.json", user: user)
+      |> render("create.json", user: user, jwt: jwt)
     end
   end
 
