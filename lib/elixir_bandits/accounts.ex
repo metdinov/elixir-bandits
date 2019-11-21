@@ -4,8 +4,8 @@ defmodule ElixirBandits.Accounts do
   """
 
   import Ecto.Query, warn: false
-  alias ElixirBandits.Registry
 
+  alias ElixirBandits.Registry
   alias ElixirBandits.Accounts.User
 
   @doc """
