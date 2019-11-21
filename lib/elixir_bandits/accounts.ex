@@ -52,7 +52,11 @@ defmodule ElixirBandits.Accounts do
   def create_user(attrs \\ %{}) do
     with changeset <- User.changeset(%User{}, attrs),
          {:ok, user} <- User.process_changeset(changeset) do
-      Registry.insert_user(user)
+      if Registry.exists?(user) do
+        {:error, "Username '#{user.username}' already taken."}
+      else
+        Registry.insert_user(user)
+      end
     end
   end
 

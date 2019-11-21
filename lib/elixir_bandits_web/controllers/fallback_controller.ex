@@ -13,10 +13,10 @@ defmodule ElixirBanditsWeb.FallbackController do
     |> render(:"404")
   end
 
-  def call(conn, {:error, invalid_bandit}) do
+  def call(conn, {:error, reason}) do
     conn
     |> put_status(:bad_request)
     |> put_view(ElixirBanditsWeb.ErrorView)
-    |> render(:"400")
+    |> render("400.json", reason: reason)
   end
 end

@@ -2,17 +2,22 @@ defmodule ElixirBandits.Bandit do
   @moduledoc """
   Bandit logic module
   """
+  alias ElixirBandits.Registry
 
-  def get_payoff(:a) do
-    {:ok, Enum.random(100..1000)}
+  def get_payoff(:a, session_id) do
+    payoff = Enum.random(100..1000)
+    {:ok, _, _} = Registry.insert_score(session_id, {:a, payoff})
+    {:ok, payoff}
   end
 
-  def get_payoff(:b) do
-    {:ok, Enum.random(1..100)}
+  def get_payoff(:b, session_id) do
+    payoff = Enum.random(1..100)
+    {:ok, _, _} = Registry.insert_score(session_id, {:b, payoff})
+    {:ok, payoff}
   end
 
   def get_payoff(invalid) do
-    {:error, invalid}
+    {:error, "Bandit #{invalid} not found"}
   end
 
   def list_bandits do

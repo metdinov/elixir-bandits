@@ -7,11 +7,11 @@ defmodule ElixirBanditsWeb.ErrorView do
   #   "Internal Server Error"
   # end
 
-  def render("400.json", _assigns) do
+  def render("400.json", reason: reason) do
     %{
       error: %{
         status: "bad_request",
-        reason: "bad request syntax"
+        reason: reason
       }
     }
   end
