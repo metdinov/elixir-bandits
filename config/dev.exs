@@ -65,3 +65,8 @@ config :phoenix, :stacktrace_depth, 20
 
 # Initialize plugs at runtime for faster development compilation
 config :phoenix, :plug_init_mode, :runtime
+
+config :elixir_bandits, ElixirBandits.Auth.Guardian,
+  issuer: "ElixirBandits",
+  secret_key: System.get_env("SECRET_KEY_BASE")
+

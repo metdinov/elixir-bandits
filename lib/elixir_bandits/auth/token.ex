@@ -3,8 +3,9 @@ defmodule ElixirBandits.Auth.Token do
 
   defstruct [:access_token, :expires_in, :token_type, :scope]
 
-  alias Walle.Auth.Guardian.Plug, as: SessionManager
-  alias Wallex.Accounts.User
+  alias ElixirBandits.Auth.Guardian.Plug, as: SessionManager
+  alias ElixirBandits.Accounts.User
+  alias ElixirBandits.Auth
 
   ## API
 
@@ -14,7 +15,7 @@ defmodule ElixirBandits.Auth.Token do
     jwt = SessionManager.current_token(conn)
     claims = SessionManager.current_claims(conn)
 
-    %Wallex.Accounts.Auth.Token{
+    %Auth.Token{
       access_token: jwt,
       expires_in: expiry_time(claims["exp"]),
       token_type: "Bearer",

@@ -35,7 +35,9 @@ defmodule ElixirBandits.Accounts do
       ** (Ecto.NoResultsError)
 
   """
-  def get_user!(id), do: Repo.get!(User, id)
+  def get_user(username) do
+    Registry.get_user(username)
+  end
 
   @doc """
   Creates a user.
@@ -105,5 +107,21 @@ defmodule ElixirBandits.Accounts do
   """
   def change_user(%User{} = user) do
     User.changeset(user, %{})
+  end
+
+  def authenticate(username, password) do
+    {:found, %User{password_hash: password_hash}} = Registry.get_user(username)
+
+    case check_password(password, password_hash) do
+      true -> {:ok, username}
+      _ -> :error
+    end
+  end
+
+  defp check_password(password, password_hash) do
+    case password do
+      nil -> Comeonin.Argon2.dummy_checkpw()
+      _ -> Argon2.verify_pass(password, password_hash)
+    end
   end
 end

@@ -2,6 +2,7 @@ defmodule ElixirBanditsWeb.AuthController do
   use ElixirBanditsWeb, :controller
 
   alias ElixirBandits.Bandit
+  alias ElixirBandits.Accounts.User
 
   action_fallback ElixirBanditsWeb.FallbackController
 

@@ -15,7 +15,7 @@ defmodule ElixirBanditsWeb.UserView do
     %{username: user.username, password: user.password}
   end
 
-  def render("create.json", %{user: user}) do
-    %{created: DateTime.utc_now(), username: user.username}
+  def render("create.json", %{user: user, jwt: jwt}) do
+    %{created: DateTime.utc_now(), username: user.username, jwt: jwt}
   end
 end
